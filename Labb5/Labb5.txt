@@ -1,0 +1,18 @@
+1.
+    1. ping -c 5 localhost
+    2. ping -c 3 -i 2 localhost
+
+2.
+    1. ip addr
+    2. ip link set ens4 up
+    3. ip addr add 192.168.1.2/24 dev ens4
+    4. route
+
+3.
+    1. För att konfigurera ipadresser, nätmasker och gateways gick vi in i /etc/network/interfaces filen och konfigurerade nätverksadaptern enligt följande:
+
+address 10.0.0.X (X är 1 för router, 2 för klient1, 3 för klient2 och 4 för servern)
+netmask 255.255.255.0
+gateway 10.0.0.1(routerns ip)
+
+

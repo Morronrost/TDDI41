@@ -1,0 +1,5 @@
+Labb 4
+
+	1.
+		En shebang är skrivs längst upp i din skriptkod och berättar vägen till kompilatorn som kommer att skriva om koden till maskin kod. En shebang skrivs i början av ett skript.
+

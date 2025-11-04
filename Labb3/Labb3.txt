@@ -1,0 +1,24 @@
+Labb 3.
+
+1.
+	Man installera ett paket genom kommandot "apt install". Man får avinstalerar ett paket genom kommandot "apt remove", man använder "apt purge" för att även få bort alla dess filer. För at få de senaste uppdateringarna till sitt system så används "apt update".
+
+	1.1 Hur ser man vilka filer som ett paket tillhandhåller?
+	dpkg -L "PACKAGE"
+
+	1.2 Hur ser man vilket paket som tillhandhåller en fil?
+	spkg -S "FILE"
+
+2.
+
+	Körde kommandot "apt install cowsay". Verifierade att paketet var nerladdad via kommandot "apt show cowsay". Jag behövde lägga till cowsays i PATH för att den skulle fungera, hittade var den låg via kommandot "whereis cowsay". Jag kunde sedan köra programmet gon att skriva "cowsay "TEXT"". Till sist så tog jag bort cowsay via "apt purge cowsay".
+
+3.
+	3.1 Hur lägger man till ett nytt repo?
+	echo "deb [URI] [suite] [component(s)]" | sudo tee /etc/apt/sources.list.d/[REPO].list
+	apt-get update
+	apt-get install [REPO NAME]
+
+	3.2 Hur tar man bort ett repo?
+	rm /etc/apt/sources.list.d/[REPO].list
+	apt update

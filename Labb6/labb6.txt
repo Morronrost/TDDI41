@@ -1,0 +1,66 @@
+1.
+    1.
+        En auktoritativ namnserver som är utpekad eller vald av domänen för att ha ip-adressen lokalt sparad så att man slipper leta upp den någon annanstans
+
+    2. 
+        De olika typerna av namnservrar utöver auktoritativ är rekursiv upplösare, root namnserver, TLD namnserver.
+
+    3. 
+        Det finns skillnad mellan dem. En domän är ett logiskt namn i DNS hierarkin, medans en zon är en administrativ enhet som hanterar inställningarna inom en viss del av domännamnsrymden.
+
+    4.
+        Rekursiv slagning inebär att DNS-servern själv hittar en ip-adress till domänen, medans en iterativ hänvisar till en annan DNS-server som kan ha informationen som söks. DNS-servern vet att det är en rekursiv fråga genom att sätta en flagga i DNS-förfrågan.
+
+    5.
+        DNS delegeras i olika zoner för att göra den mer skalbar och lättare att hantera.
+        
+    6.
+        Omvänd DNS-förfrågan fungerar genom att gå igenom DNS-serverns ptr(pointer) register och hitta domänen som hör till ip-adressen.
+
+2.
+    1.
+        Den första raden berättar vilken version av "dig" som körs. 
+        Header delen summerar DNS-förfrågan, den berättar frågetypen, respons statusen och flaggor som till exempel rekursiv flaggan. Den listar också ut frågor, svar, auktoritativa- och ytterligare uppgifter i DNS-svaret.
+        I "Pseudosection" visas det om en förlängning på DNS är använt, den specifierar vilka flaggor som används och storleken på udp paketet.
+        I "Question" så visas domännamnet som förfrågas, att frågan är över internet och att svaret är en adress record
+        Answer visar svaren på frågorna från question, fast det finns också en Time to Live timer och ip-adressen som domänen är kopplad till
+        Längst ner visas hur snabbt svaret kom, DNS-serverns ip-adress och port, när dig kommandot kördes och storleken på DNS-serverns svar.
+
+    2.
+        A-records är en Adress record och tilldelar ett domännamn till en IPv4 adress, och innehåller domännamn och IP-adressen
+        AAAA-records är en Adress record som tilldelar domännamnen till en IPv6 adress, innehållersmma som A-records
+        NS-records är en Name Server record och specifierar den auktoritativa nameserver för en domän. Denna innehåller domännamnet och en kvalifierad FQDN av den namnservern
+        MX-records är en Mail Exchange record och dirigerar epost till servrar som kan ta hand om dom. Dessa innehåller domännamnet, en proritet till varje mejlserver och FQDN för mejlservern
+        SOA-records är en Start of Authority record och innehåller administrativ information om DNS-zonen. Den innehåller FQDN av den primära auktoritativanamnservern, emejladressen till administratorn för zonen, serialnummer till zonfilen, Refresh-, Retry- och Expire intervaller och minimum TTL.
+
+3.
+    Den startar med att fråga root DNS servrar för att hitta auktoritativen till .com TLD:n. Sedan frågas TLD:n efter auktoritativen till google.com, när den har hittats så frågas googles auktoritativanamnserver efter googles ip-adress. Sist så visas det A-record som retuneras av googles egna DNS
+
+4. 
+    1. Öppna /etc/resolv.conf och lägg till: nameserver "DNS-IP".
+    2. SOA står för "start of authority". 
+        MMNAME:  namnet på namnservern.
+        SERIAL:  serialnummer.
+        REFRESH: tiden (i sekunder) som sekundärservrarna ska vänta förrens de checkar med primärservern om SOA posten ska uppdateras.
+        RETRY:   tiden en server ska vänta på en icke responsiv primärservern förrens den frågar servern igen.
+        EXPIRE:  är tiden som sekundärservrarna ska vänta på svar från primärservern förrens de slutar svara på förfrågningar angående zonen.
+        
+5.
+    Vi döpte zonen/domänen till Zorbak. För SOA så utgick vi från db.local, det som vi ändrade på i den var domännamnet, och serialnummret till dagens datum med ett nummer i slutet som ökade för varje uppdatering.
+    För reverse filen använde vi istället db.0 som vår mall och ändrade samma saker som i forward-dns filen.
+    Anledningen vi valde att använda servern som DNS är för att routern används som gateway och för att vi inte vill att klienter ska kunna komma åt och ändra i DNS:en.
+
+6.  
+    1. 
+        Det finns ingenting som stoppar oss från att döpa vår server till google.com och att lägga in alla deras domäner i våra zonfiler, dock så kommer inga användare att derigeras till våra servrar så länge de inte använder vår DNS som resolver.
+        Det finns en utökning till DNS som kallas DNSSEC. Denna utökning verifierar att svar kommer från rätt auktoritativaserver och ser till att data inte manipuleras på vägen. Så om google.com är signerad med DNSSEC och användarens resolver validerar DNSSEC så kommer vårt falska svar att misslycka valideringen.
+        Om vi satte upp en falsk tjänst med adressen gmail.com så kan användare bli skyddad med hjälp av protokollet TLS, TLS är oberoende av DNS och används med adresser som startar med https://. När en användere försöker nå gmail.com så kommer weblässaren fråga efter ett TLS-certifikat, som vår tjänst inte har, webläsaren kommer då skicka ett varningsmeddelande till användaren om detta. 
+
+    2.
+        För att delegera auktoriteten för zorbak.com till andra namnservrar så skulle vi behöva lägga ytterligare NS poster, och även glue poster. NS posten berättar att adressen ska bli en namnserver, och glue posten används så att resolvern inte ska behöva slå upp varje adress utan kan kontakta dom direkt.
+        Om vi skulle till exempel lägga till den nya namnserver ns2.zorbak.com, så skulle vi lägga till dessa rader:
+        @       IN      NS      ns2.zorbak.com
+
+        user    IN      A       10.0.0.5
+
+        I reverse filen så ser det ungefär likadant ut, bara att glue posten blir en PTR record istället för A record eftersom reverse filen pekar på en ip-adress beroende på vad den får namn inmatad

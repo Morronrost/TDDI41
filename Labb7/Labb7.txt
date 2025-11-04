@@ -1,0 +1,70 @@
+1.
+    1. DIT står för Directory Information Tree. Alltså är det ett hierarkiskt träd som innehåller entries i LDAP.
+       Varje entry har ett unikt "Distinguished Name" samt flera attributes som i sig innehåller en key samt en eller flera värden. Varje attribut är definierad i minst en objectClass.
+       Attribut och objectClass är sig definierade i ett schema då objectClass räknas som ett speciellt attribut.
+       
+    
+    2. 
+        DN står för Distinguished Name och är en unik identifierare till en entry i katalogen. DC står för Domain Component och är en del av dn
+        som reprensenterar en komponent av domännamnet. T.ex example i example.com
+
+    3. Ett attribute innehåller en key samt en eller flera värden. Varje värde måste vara definierad i minst en objectClass.
+
+    4.
+        Object class är ett speciellt attribut som defineras inom ett schema. Object class kan vara en attribute container eller en sökoperation.
+        En object class har ett namn eller identifierare som är unikt globalt.
+    
+    5.
+        En strukturell objektklass är den primära klassen och kan inte ändras. Auxilliära objektklasser kan vara flera och ändras eller tas bort.
+        Varje objekt måste ha en strukturell objektklass men behöver inte ha någon auxilliär.
+
+2.
+    1.
+        root@gw:~# ldapsearch -x
+        # extended LDIF
+        #
+        # LDAPv3
+        # base <dc=zorbak,dc=com> (default) with scope subtree
+        # filter: (objectclass=*)
+        # requesting: ALL
+        #
+
+        # zorbak.com
+        dn: dc=zorbak,dc=com
+        objectClass: top
+        objectClass: dcObject
+        objectClass: organization
+        o: zorbak
+        dc: zorbak
+
+        # users, zorbak.com
+        dn: ou=users,dc=zorbak,dc=com
+        ou: users
+        objectClass: organizationalUnit
+
+        # c1, users, zorbak.com
+        dn: uid=c1,ou=users,dc=zorbak,dc=com
+        objectClass: posixAccount
+        objectClass: inetOrgPerson
+        cn: client-1
+        sn: client
+        uidNumber: 101
+        gidNumber: 101
+        homeDirectory: /etc/ldap/c1
+        uid: c1
+
+        # search result
+        search: 2
+        result: 0 Success
+
+        # numResponses: 5
+        # numEntries: 4
+
+3.
+    1.
+        root@server:~# echo -n 'password' | tee /etc/ldapscripts/ldapscripts.passwd
+        passwordroot@server:~# ldapadduser c2 101
+        Successfully added user c2 to LDAP
+        Successfully set password for user c2
+        root@server:~# ldapsetpasswd c2 password
+        Successfully set encoded password for user uid=c2,ou=users,dc=zorbak,dc=com

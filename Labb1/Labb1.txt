@@ -1,0 +1,16 @@
+1.
+
+2.1
+	2.1.1 Vilken/vilka är gästmaskinerna?
+	VM:en är gästmaskinen
+
+	2.1.2 Vilken/vilka är värdmaskinerna?
+	Liu systemet är värdmaskinen
+
+5.2
+	5.2.5 Kopiera filen /ect/network/interfaces från VM:en till er hemkatalog
+	scp /etc/network/interfaces ludka502@ssh.edu.liu.se:/home/ludka502
+
+	5.2.6 Kopiera mappen /etc/default och allt dess innehåll från VM:en till er hemkatalog
+	scp -r /etc/default/ ludka502@ssh.edu.liu.se:/home/ludka502
+	

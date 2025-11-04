@@ -1,0 +1,16 @@
+;
+; BIND reverse data file for broadcast zone
+;
+$TTL	604800
+@	IN	SOA	server.zorbak.com. root.zorbak.com. (
+			2025072803	; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@	IN	NS	server.zorbak.com.
+4	IN	PTR	server.zorbak.com.
+1	IN	PTR	gw.zorbak.com.
+2	IN	PTR	client-1.zorbak.com.
+3	IN	PTR	client-2.zorbak.com.
