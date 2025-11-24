@@ -18,7 +18,16 @@
       jitter är den estimerade errorn i ms.
 
 ## Konfiguration av NTP - [NTP.2](https://www.ida.liu.se/~TDDI41/2025/uppgifter/ntp/index.sv.shtml#ntp.2)
+  ### Hur ser man på detta utdata att er output i någon mening är vettig relativt kraven? 
+      I remote ser vi att den går mot routern och den är markerad med *, vilket betyder att den är syncad.
+      Vi ser inte heller någon annan server när vi kör ntpq -p.
+      Vi kan också se att vår stratum är 2 på klienterna, vilket stämmer då vi är 2 ifrån referensen.
 
-
+  ### Utdata för router
+      *192.36.143.134  .PPS.    1  u  61  64  377  3.969  +3.777  3.849
+  ### Utdata för klient
+      *gw.zorbak.com  192.36.143.134  2  u  21  64  1  1.668  +2.932  1.248
+      
 ## Testning av NTP-konfiguration - [NTP.3](https://www.ida.liu.se/~TDDI41/2025/uppgifter/ntp/index.sv.shtml#ntp.3)
+
 
