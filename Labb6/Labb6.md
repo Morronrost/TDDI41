@@ -1,22 +1,22 @@
 ## Grunderna i DNS - [DNS.1](https://www.ida.liu.se/~TDDI41/2025/uppgifter/dns/index.sv.shtml#dns.1)
 
   1. Vad är en auktoritativ namnserver?
-    En auktoritativ namnserver som är utpekad eller vald av domänen för att ha ip-adressen lokalt sparad så att man slipper leta upp den någon annanstans
+    En auktoritativ namnserver som är utpekad eller vald av domänen för att ha ip-adressen lokalt sparad så att man       slipper leta upp den någon annanstans
 
      
-  2. Vad är alternativet till en auktoritativ namnserver
+  3. Vad är alternativet till en auktoritativ namnserver
     De olika typerna av namnservrar utöver auktoritativ är rekursiv upplösare, root namnserver, TLD namnserver.
    
-  3. Är det skillnad mellan en domän och en zon? Vilken skillnad isåfall?
+  4. Är det skillnad mellan en domän och en zon? Vilken skillnad isåfall?
     Det finns skillnad mellan dem. En domän är ett logiskt namn i DNS hierarkin, medans en zon är en administrativ enhet som hanterar inställningarna inom en viss del av domännamnsrymden.
    
-  4. Vad innebär rekursiv slagning? Iterativ? Hur vet DNS-servern du frågar om det är en rekursivt ställd fråga?
+  5. Vad innebär rekursiv slagning? Iterativ? Hur vet DNS-servern du frågar om det är en rekursivt ställd fråga?
       Rekursiv slagning inebär att DNS-servern själv hittar en ip-adress till domänen, medans en iterativ hänvisar till en annan DNS-server som kan ha informationen som söks. DNS-servern vet att det är en rekursiv fråga genom att sätta en flagga i DNS-förfrågan.
    
-  5. I DNS delegerar vi ansvaret för olika zoner. Varför?
+  6. I DNS delegerar vi ansvaret för olika zoner. Varför?
       DNS delegeras i olika zoner för att göra den mer skalbar och lättare att hantera.
    
-  6. Ovan beskriver vi hur man kommer fram till att liu.se har adressen 130.236.18.52 (och hela delegerings-hierarkin från root till auktoriteten för .se-domänen, till liu.se). Hur sker en uppslagning ''åt andra hållet'', där man vill slå upp om adressen 130.236.18.52 motsvarar någon webbadress (enligt din DNS-server)? Du kan vilja läsa om reverse DNS.
+  7. Ovan beskriver vi hur man kommer fram till att liu.se har adressen 130.236.18.52 (och hela delegerings-hierarkin från root till auktoriteten för .se-domänen, till liu.se). Hur sker en uppslagning ''åt andra hållet'', där man vill slå upp om adressen 130.236.18.52 motsvarar någon webbadress (enligt din DNS-server)? Du kan vilja läsa om reverse DNS.
       Omvänd DNS-förfrågan fungerar genom att gå igenom DNS-serverns ptr(pointer) register och hitta domänen som hör till ip-adressen.
 
 
@@ -132,3 +132,4 @@
     check_zone()
     check_running()
     check_names()
+
