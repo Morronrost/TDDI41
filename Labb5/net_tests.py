@@ -87,6 +87,7 @@ def test_firewall():
 
 test_ip()
 reach_gateway()
+reach_outside()
 test_firewall()
 
 if HOSTNAME == "gw":
