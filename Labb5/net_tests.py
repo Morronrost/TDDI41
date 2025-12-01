@@ -73,9 +73,9 @@ def test_firewall():
     result = result.stdout.decode("utf-8").split()
 	assert result[-1] == "accept"
 
-	result = subprocess.run("nft list ruleset | grep tcp", shell=True, stdout=subprocess.PIPE)
+	result = subprocess.run("nft list ruleset | grep 22", shell=True, stdout=subprocess.PIPE)
     result = result.stdout.decode("utf-8").split()
-	assert result[3] == "22"
+	aassert result[-1] == "accept"
 
 	result = subprocess.run("nft list ruleset | grep echo-request", shell=True, stdout=subprocess.PIPE)
     result = result.stdout.decode("utf-8").split()
