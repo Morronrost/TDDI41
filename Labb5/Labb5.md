@@ -72,7 +72,7 @@
 
 ## Testning av nätverkskonfiguration - [NET.7](https://www.ida.liu.se/~TDDI41/2025/uppgifter/net/index.sv.shtml#net.7)
     import subprocess, socket
-  
+
     NETWORK = "10.0.0.0/24"
     NETMASK = "10.0.0.255"
     ROUTER_IP = "10.0.0.1"
@@ -87,29 +87,29 @@
     
     
     
-      def test_ip():
-          result = subprocess.run("ip r", shell=True, stdout=subprocess.PIPE)
-          resultDecoded = result.stdout.decode("utf-8").split()
-          gateway = resultDecoded[2]
-    
-        if HOSTNAME != "gw":
-            result = subprocess.run("ip addr | grep inet | grep ens3", shell=True, stdout=subprocess.PIPE)
-        else:
-            result = subprocess.run("ip addr | grep inet | grep ens4", shell=True, stdout=subprocess.PIPE)
+    def test_ip():
+        result = subprocess.run("ip r", shell=True, stdout=subprocess.PIPE)
         resultDecoded = result.stdout.decode("utf-8").split()
-    
-        netmask = resultDecoded[3]
-        ip = resultDecoded[1]
-    
-        print("Gateway is: " + str(gateway))
-        print("Netmask is: " + str(netmask))
-        print("IP address is: " + str(ip))
-    
-        if HOSTNAME != "gw":
-            assert gateway == ROUTER_IP
-        assert netmask == NETMASK
-        assert ip == hosts[HOSTNAME]+"/24"
-    
+        gateway = resultDecoded[2]
+
+    if HOSTNAME != "gw":
+        result = subprocess.run("ip addr | grep inet | grep ens3", shell=True, stdout=subprocess.PIPE)
+    else:
+        result = subprocess.run("ip addr | grep inet | grep ens4", shell=True, stdout=subprocess.PIPE)
+    resultDecoded = result.stdout.decode("utf-8").split()
+
+    netmask = resultDecoded[3]
+    ip = resultDecoded[1]
+
+    print("Gateway is: " + str(gateway))
+    print("Netmask is: " + str(netmask))
+    print("IP address is: " + str(ip))
+
+    if HOSTNAME != "gw":
+        assert gateway == ROUTER_IP
+    assert netmask == NETMASK
+    assert ip == hosts[HOSTNAME]+"/24"
+
     def reach_ip(ip):
         result = subprocess.run(f"ping {ip} -c 1 | grep transmitted", shell=True, stdout=subprocess.PIPE)
         result = result.stdout.decode("utf-8").split()
@@ -122,6 +122,8 @@
     		reach_ip(ROUTER_IP)
     	else:
     		reach_ip("10.0.0.2")
+    def reach_outside():
+    	reach_ip("8.8.8.8")
     
     def test_ip_forwarding():
         result = subprocess.run("sysctl net.ipv4.ip_forward", shell=True, stdout=subprocess.PIPE)
@@ -133,21 +135,36 @@
         result = result.stdout.decode("utf-8").split()
         assert result[2] == "masquerade"
     
+    
     def test_firewall():
         result = subprocess.run("nc -zv localhost 22 | grep ssh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         result = result.stdout.decode("utf-8").split()
-    
+
         assert result[-1] == "open"
+    
+    	result = subprocess.run("nft list ruleset | grep lo", shell=True, stdout=subprocess.PIPE)
+        result = result.stdout.decode("utf-8").split()
+    	assert result[-1] == "accept"
+    
+    	result = subprocess.run("nft list ruleset | grep tcp", shell=True, stdout=subprocess.PIPE)
+        result = result.stdout.decode("utf-8").split()
+    	assert result[3] == "22"
+    
+    	result = subprocess.run("nft list ruleset | grep echo-request", shell=True, stdout=subprocess.PIPE)
+        result = result.stdout.decode("utf-8").split()
+    	assert result[-1] == "accept"
     
         for host in hosts:
             reach_ip(hosts[host])
-             
-    
+         
+
     test_ip()
     reach_gateway()
+    reach_outside()
     test_firewall()
     
     if HOSTNAME == "gw":
         test_ip_forwarding()
         test_masquerade()
+
 
