@@ -49,6 +49,8 @@ def reach_gateway():
 		reach_ip(ROUTER_IP)
 	else:
 		reach_ip("10.0.0.2")
+def reach_outside():
+	reach_ip("8.8.8.8")
 
 def test_ip_forwarding():
     result = subprocess.run("sysctl net.ipv4.ip_forward", shell=True, stdout=subprocess.PIPE)
@@ -60,11 +62,24 @@ def test_masquerade():
     result = result.stdout.decode("utf-8").split()
     assert result[2] == "masquerade"
 
+
 def test_firewall():
     result = subprocess.run("nc -zv localhost 22 | grep ssh", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     result = result.stdout.decode("utf-8").split()
 
     assert result[-1] == "open"
+
+	result = subprocess.run("nft list ruleset | grep lo", shell=True, stdout=subprocess.PIPE)
+    result = result.stdout.decode("utf-8").split()
+	assert result[-1] == "accept"
+
+	result = subprocess.run("nft list ruleset | grep tcp", shell=True, stdout=subprocess.PIPE)
+    result = result.stdout.decode("utf-8").split()
+	assert result[3] == "22"
+
+	result = subprocess.run("nft list ruleset | grep echo-request", shell=True, stdout=subprocess.PIPE)
+    result = result.stdout.decode("utf-8").split()
+	assert result[-1] == "accept"
 
     for host in hosts:
         reach_ip(hosts[host])
