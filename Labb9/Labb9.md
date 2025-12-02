@@ -1,7 +1,9 @@
 ## Kommando för filsystem - [STO.1](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.1)
   ### 1. Vad är syftet med /etc/fstab?
+    Fstab är en konfigurationsfil som används för att bestäma vart filsystemen och partitioner blir automatiskt monterade vid uppstart.
   
   ### 2. Vad används kommandot mke2fs (mkfs.ext{2..4}) till?
+    Kommandot används för att skapa ett filsystem av typen ext{2..4} på en partition.
   
   ### 3. Vad skriver kommandot df -h ut?
   
@@ -47,4 +49,5 @@
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
 
