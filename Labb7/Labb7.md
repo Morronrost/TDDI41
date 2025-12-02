@@ -80,6 +80,15 @@
     uidNumber: 101
     gidNumber: 101
     homeDirectory: /etc/ldap/c1
+    userPassword: password
+
+  ### Lägg till organizational unit
+      root@server:~# ldapadd -x -D "cn=admin,dc=zorbak,dc=com" -W -f User.ldif
+      adding new entry "ou=users,dc=zorbak,dc=com"
+    
+  ### Lägg till user
+      root@server:~# ldapadd -x -D "cn=admin,dc=zorbak,dc=com" -W -f User.ldif
+      adding new entry "uid=c1,ou=users,dc=zorbak,dc=com"
 
   ### Ldapsearch
         root@gw:~# ldapsearch -x
@@ -141,7 +150,59 @@
 
 
 ## Lägga till en användare i LDAP med ldapscripts - [LDAP.4](https://www.ida.liu.se/~TDDI41/2025/uppgifter/ldap/index.sv.shtml#ldap.4)
+        root@server:~# echo -n 'password' | tee /etc/ldapscripts/ldapscripts.passwd password
+        
+  ### Ldapscripts.conf
+        # LDAP server
+        # DEBIAN: value from /etc/nslcd.conf (uri) is used.
+        SERVER="ldap://10.0.0.4"
+        
+        # Suffixes
+        # DEBIAN: values from /etc/nslcd.conf (base maps) are used.
+        SUFFIX="dc=zorbak,dc=com" # Global suffix
+        GSUFFIX="ou=groups"        # Groups ou (just under $SUFFIX)
+        USUFFIX="ou=users"         # Users ou (just under $SUFFIX)
+        MSUFFIX="ou=machines"      # Machines ou (just under $SUFFIX)
+        
+        # Simple authentication parameters
+        # The following BIND* parameters are ignored if SASLAUTH is set
+        BINDDN="cn=admin,dc=zorbak,dc=com"
+        # The following file contains the raw password of the BINDDN
+        # Create it with something like : echo -n 'secret' > $BINDPWDFILE
+        # WARNING !!!! Be careful not to make this file world-readable
+        BINDPWDFILE="/etc/ldapscripts/ldapscripts.passwd"
+        # For older versions of OpenLDAP, it is still possible to use
+        # unsecure command-line passwords by defining the following option
+        # AND commenting the previous one (BINDPWDFILE takes precedence)
+        #BINDPWD="secret"
+        
+        # Start with these IDs *if no entry found in LDAP*
+        GIDSTART="100" # Group ID
+        UIDSTART="100" # User ID
+        MIDSTART="20000" # Machine ID
+
+  ### Lägga till användare
+        root@server:~# ldapadduser c2 101
+        Successfully added user c2 to LDAP
+        Successfully set password for user c2
+        root@server:~# ldapsetpasswd c2 password
+        Successfully set encoded password for user uid=c2,ou=users,dc=zorbak,dc=com
+
+  ### login
+        root@server:/etc/ldapscripts# ssh c2@zorbak.com
+        c2@zorbak.com's password: 
+        Linux server 5.10.0-15-amd64 #1 SMP Debian 5.10.120-1 (2022-06-09) x86_64
+        
+        The programs included with the Debian GNU/Linux system are free software;
+        the exact distribution terms for each program are described in the
+        individual files in /usr/share/doc/*/copyright.
+        
+        Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+        permitted by applicable law.
+        Last login: Tue Dec  2 14:52:36 2025 from 10.0.0.4
+        $ 
 
 ## Lägga till flera användare i LDAP med ldapscripts - [LDAP.5](https://www.ida.liu.se/~TDDI41/2025/uppgifter/ldap/index.sv.shtml#ldap.5)
 
 ## Testning av LDAP-konfiguration och verktyg - [LDAP.6](https://www.ida.liu.se/~TDDI41/2025/uppgifter/ldap/index.sv.shtml#ldap.6)
+
