@@ -204,5 +204,38 @@
 
 ## Lägga till flera användare i LDAP med ldapscripts - [LDAP.5](https://www.ida.liu.se/~TDDI41/2025/uppgifter/ldap/index.sv.shtml#ldap.5)
 
+      adduser c4
+
+      root@server:/etc/ldapscripts# ldapsetpasswd c4 password
+      Successfully set encoded password for user uid=c4,ou=users,dc=zorbak,dc=com
+  ### Login
+      root@server:/etc/ldapscripts# login c4
+      Password: 
+      Linux server 5.10.0-15-amd64 #1 SMP Debian 5.10.120-1 (2022-06-09) x86_64
+      
+      The programs included with the Debian GNU/Linux system are free software;
+      the exact distribution terms for each program are described in the
+      individual files in /usr/share/doc/*/copyright.
+      
+      Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+      permitted by applicable law.
+      c4@server:~$ 
+
+
+  ### Script
+        #!/bin/bash
+    
+        FILE="users.txt"
+        
+        while read USER; do
+                adduser --disabled-password --gecos "" "$USER"
+                ldapadduser "$USER" "$USER"
+                ldapsetpasswd "$USER" "password"
+        done < "$FILE"
+
+
+
+
 ## Testning av LDAP-konfiguration och verktyg - [LDAP.6](https://www.ida.liu.se/~TDDI41/2025/uppgifter/ldap/index.sv.shtml#ldap.6)
+
 
