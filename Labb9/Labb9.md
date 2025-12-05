@@ -41,6 +41,8 @@
     
 ## LVM - [STO.4](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.4)
   ### 1. Förklara följande begrepp: Fysisk volym (PV: Physical Volume), volymgrupp (VG: Volume Group) och logisk volym (LV: Logical Volume) och hur de hänger ihop.
+    Fysisk volym är partioner eller diskar som inte är formaterade, volym grupper är en samling av fysiska volymer och logiska volymer är virtuella partitioner. 
+    När de fysiska volymerna är grupperade i volymgrupper så kan man skapa en logisk volym som ses som bara en partition. T.ex 2 diskar på 500GB vardera kan se ut som en disk på 1TB.
   
   ### 2. Vad är kommandot för att göra klart en fysisk volym för LVM?
   
@@ -68,6 +70,7 @@
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
 
 
 
