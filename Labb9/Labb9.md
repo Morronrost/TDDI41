@@ -6,8 +6,10 @@
     Kommandot används för att skapa ett filsystem av typen ext{2..4} på en partition.
   
   ### 3. Vad skriver kommandot df -h ut?
+    Kommandot skriver ut hur mycket ledig plats det finns på varje partition, -h flaggan skriver ut dom i Kilo-, Mega-, Giga- etc. format
   
   ### 4. Förklara vad kommandot mount -t ext3 /dev/sdb2 /mnt/media innebär.
+    Det betyder att man monterar en ext3 partition som ligger på /dev/sdb2 till /mnt/media/ 
   
 ## RAID - [STO.2](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.2)
   ### 1. Vad står förkortningen RAID för?
@@ -49,5 +51,6 @@
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
 
 
