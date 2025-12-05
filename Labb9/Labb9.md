@@ -13,15 +13,32 @@
   
 ## RAID - [STO.2](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.2)
   ### 1. Vad står förkortningen RAID för?
+    Det står för Redundant Array of Independant Disks
   
   ### 2. Förklara i grova drag hur RAID-0 fungerar
+    Den skriver/läser varannan block från hårddiskarna, t.ex block 1 från hdd 1, block 2 från hdd 2, block 3 från hdd 1 osv...
+    Detta resulterar i högre hastighet då båda diskarna kan skriva samtidigt.
   
   ### 3. Förklara i grova drag hur RAID-1 fungerar
+    RAID-1 betyder att disken kopieras exakt till en annan disk för att ha parity/backup ifall den första disken felar.
   
   ### 4. Vad innebär kommandot mdadm --stop /dev/md0 ?
-
+    Det stänger av arrayen på /dev/md0
+    
 ## (Av)montera diskar - [STO.3](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.3)
+    Börja med kommandot mdadm --create /dev/md0 --levels=1 --raid-devices=2 /dev/vda /dev/vdb
+    Formatera sedan raid1 partitionen till ext4 med mke2fs -t ext4 /dev/md0
+    Montera partitionen med mount -t ext4 /dev/md0 /mnt
+    Verifiera med df -T
+    Avmontera partitionen med umount /dev/md0
 
+    RAID 0:
+    mdadm --create /dev/md1 --levels=0 --raid-devices=2 /dev/vdc /dev/vdd
+    Formatera med ext4 med mke2fs -t ext4 /dev/md1
+    Montera partitionen med mount -t ext4 /dev/md1 /mnt
+    Verifiera med df -T
+    Avmontera partitionen med umount /dev/md1
+    
 ## LVM - [STO.4](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.4)
   ### 1. Förklara följande begrepp: Fysisk volym (PV: Physical Volume), volymgrupp (VG: Volume Group) och logisk volym (LV: Logical Volume) och hur de hänger ihop.
   
@@ -51,6 +68,7 @@
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
 
 
 
