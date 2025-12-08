@@ -45,14 +45,22 @@
     När de fysiska volymerna är grupperade i volymgrupper så kan man skapa en logisk volym som ses som bara en partition. T.ex 2 diskar på 500GB vardera kan se ut som en disk på 1TB.
   
   ### 2. Vad är kommandot för att göra klart en fysisk volym för LVM?
+    För att skapa en fysisk volym används kommandot pvcreate [partition]
   
   ### 3. Vad är kommandot för att skapa en volymgrupp?
+    Volymgrupper skapas av kommandot vgcreate [namn på grupp] [partition]
   
   ### 4. Vad är kommandot för att utöka en volymgrupp med ytterligare en PV?
+    vgextend [namn på grupp] [fysiska partition]
   
   ### 5. Hur skapar du en logisk volym på 100MiB från en volymgrupp?
+    lvcreate --name [namn på volym] --size 100m [namn på grupp]
 
 ## Hantering av volymer och volymgrupper - [STO.5](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.5)
+    Skapade fysiska volymer med kommandona pvcreate /dev/md0 och pvcreate /dev/md1 för att initialisera inför LVM
+    Skapade en volymgrupp med vgcreate vgvirt /dev/md0 och utökade den med vgextend vgvirt /dev/md1
+    Skapade logiska volymer med lvcreate --name lvvol1/lvvol2 --size 100m vgvirt
+    
 
 ## Konfigurering av NFS - [STO.6](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.6)
 
@@ -70,6 +78,7 @@
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
 
 
 
