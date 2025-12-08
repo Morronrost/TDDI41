@@ -33,12 +33,11 @@ with open(sys.argv[1], "rt") as namefile:
                 finalName += alphabet[random.randint(0,(len(alphabet)-1))]
 
         finalName = (finalName + str(random.randint(0,9)) + str(random.randint(0,9)) + str(random.randint(0,9)))
-		password = getPass()
-		#try:
-		subprocess.run(['useradd', '-ms', '/bin/bash', finalName ])
-		subprocess.run(['passwd', finalName], input=f"{password}\n{password}\n", text=True)
-		#except:
-		#	print(f"Failed to add user.")
-		#	sys.exit(1)
-		print("ID: " + finalName)
-		print("Password: " + password)
+        password = getPass()
+        subprocess.run(['useradd', '-ms', '/bin/bash', finalName ])
+        subprocess.run(['passwd', finalName], input=f"{password}\n{password}\n", text=True)
+	    #except:
+	    #	print(f"Failed to add user.")
+	    #	sys.exit(1)
+        print("ID: " + finalName)
+        print("Password: " + password)
