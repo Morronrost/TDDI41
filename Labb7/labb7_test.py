@@ -1,5 +1,7 @@
 import subprocess
 
+HOSTNAME = open("/etc/hostname", "r").read().strip()
+
 def test_services():
 	nslcdResult = subprocess.run("service nslcd status | grep active", shell=True, stdout=subprocess.PIPE)
 	nslcdResultDecoded = nslcdResult.stdout.decode("utf-8").split()[1]
@@ -28,6 +30,7 @@ def test_ldapsearch():
 	resultDecoded = result.stdout.decode("utf-8").split()
 	assert resultDecoded[1] == "zorbak.com"
 
-test_services()
+if HOSTNAME == "server":
+	test_services()
 print_nsswitch()
 test_ldapsearch()
