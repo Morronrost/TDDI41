@@ -93,14 +93,24 @@
 ## autofs utan LDAP - [STO.8](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.8)
     La till användara autofs{1..2} via användarskaparskriptet och flyttade deras /home mappar till /home-storage{1..2}
     I /etc/exports, la till raderna:
-    /home-storage1  10.0.0.2(rw,wdelay,root_squash,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
-    /home-storage1  10.0.0.3(rw,wdelay,root_squash,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
-    /home-storage2  10.0.0.2(rw,wdelay,root_squash,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
-    /home-storage2  10.0.0.3(rw,wdelay,root_squash,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
+      /home-storage1  10.0.0.2(rw,wdelay,root_squash,no_subtree_check,sec=sys,secure,no_all_squash)
+      /home-storage1  10.0.0.3(rw,wdelay,root_squash,no_subtree_check,sec=sys,secure,no_all_squash)
+      /home-storage2  10.0.0.2(rw,wdelay,root_squash,no_subtree_check,sec=sys,secure,no_all_squash)
+      /home-storage2  10.0.0.3(rw,wdelay,root_squash,no_subtree_check,sec=sys,secure,no_all_squash)
+    Exporterade alla med exportfs -a
+
+  ### På klienterna
+    Installerade autofs
+    Gjorde /home till den indirekta monteringspunkten genom att lägga till raden: "/home /etc/auto.home" i /etc/auto.master
+    I /etc/auto.home definerade vi varje användares subkatalog och vart den ska monteras genom att lägga till raderna:
+      autofs1 -fstype=nfs4, rw, nosuid, soft nfs-10.0.0.4:/home-storage1/autofs1
+      autofs2 -fstype=nfs4, rw, nosuid, soft nfs-10.0.0.4:/home-storage2/autofs2
+    Nu när användaren loggar in så kommer användares huvudkatalog automatiskt monteras på nfs-servern.
 
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
 
 
 
