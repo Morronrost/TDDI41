@@ -85,14 +85,23 @@
     autofs och autofs-ldap
   
   ### 3. Vad är det för skillnad på direkta och indirekta automount maps?
+    I direkta automount mappar så definerar man specifika kataloger som ska monteras medans indirekta specifieras endast den översta katalogen och autofs hanterar katalogerna under.
   
   ### 4. Vad heter huvudkonfigurationsfilen för automount? Hur pekar den ut master-katalogen/map:en? Visa detta. Notera att detta inte är samma sak som auto.master.
+    /etc/autofs.conf är huvudkonfigurationsfilen, det finns en rad i filen, "master_map_name = /etc/auto.master" som bestämmer vart master map filen ligger, som i sig pekar ut master-katalogen.
 
 ## autofs utan LDAP - [STO.8](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.8)
+    La till användara autofs{1..2} via användarskaparskriptet och flyttade deras /home mappar till /home-storage{1..2}
+    I /etc/exports, la till raderna:
+    /home-storage1  10.0.0.2(rw,wdelay,root_squash,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
+    /home-storage1  10.0.0.3(rw,wdelay,root_squash,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
+    /home-storage2  10.0.0.2(rw,wdelay,root_squash,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
+    /home-storage2  10.0.0.3(rw,wdelay,root_squash,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
 
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
 
 
 
