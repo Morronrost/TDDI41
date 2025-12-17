@@ -64,13 +64,25 @@
     Monterade vid boot genom att redigera /etc/fstab:
     /dev/vgvirt/lvvol{1..2} /home-storage{1..2} ext4 defaults 0 2
     
-
 ## Konfigurering av NFS - [STO.6](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.6)
+    Laddade ner nödvändiga paket med apt install nfs-kernel-server
+    Redigerade i /etc/default/nfs-common, satte NEED_STATD=no och NEED_IDMAPD=yes
+    Redigerade i /etc/default/nfs-kernel-server, satte RPCNFSDOPTS="-N 2 -N 3" och RPCMOUNTDOPTS="--manage-gids -N 2 -N3". Detta för att stänga av nfs v2 och v3
+    Skapade en mapp /srv/nfs4, la till -p flaggan som skapar parent mappar om nödvändigt. Sedan skapades en symbolisk länk mellan /usr/local och /srv/nfs4/usr_local med ln kommandot.
+    Redigerade i /etc/exports, avkommenterade /srv/nfs4 delen. fsid=0 berättar att psuedo-root är toppen, no_subtree_check berättar att den inte ska check inodes.
+    Ändrade i nftables.conf, tillåt tcp port 2049 genom brandväggen (standard port för nfs)
+
+  ### På klienten
+    Laddade ner nfs-common
+    Skapade en mapp /mnt/user_local och sedan monterade /usr/local från servern till den.
+    Redigerade i /etc/fstab, gjorde så att mappen monteras vid boot, genom att lägga till raden "10.0.0.4:/ /mnt/user_local nfs4 defaults 0 0"
 
 ## autofs och automount - [STO.7](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.7)
   ### 1. Vad är en automount map?
-  
+    Automount mapp är en konfigurationsfil som visar vart ett filsystem ska monteras
+    
   ### 2. Vilket paket behöver du installera för att använda automount?
+    autofs och autofs-ldap
   
   ### 3. Vad är det för skillnad på direkta och indirekta automount maps?
   
@@ -81,6 +93,7 @@
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
 
 
 
