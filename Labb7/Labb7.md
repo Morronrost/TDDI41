@@ -224,14 +224,20 @@
 
   ### Script
         #!/bin/bash
-    
+
         FILE="users.txt"
         
         while read USER; do
-                adduser --disabled-password --gecos "" "$USER"
-                ldapadduser "$USER" "$USER"
+                adduser --disabled-password --gecos " " "$USER"
+                echo "$USER added locally"
+                USER_UID=$(id -u "$USER") 
+                ldapadduser "$USER" "$USER" "$USER_UID"
+                echo "$USER added to ldap"
                 ldapsetpasswd "$USER" "password"
         done < "$FILE"
+
+
+
 
 
 
@@ -270,6 +276,7 @@
       test_services()
       print_nsswitch()
       test_ldapsearch()
+
 
 
 
