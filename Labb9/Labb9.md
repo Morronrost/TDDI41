@@ -106,13 +106,116 @@
     Installerade autofs
     Gjorde /home till den indirekta monteringspunkten genom att lägga till raden: "/home /etc/auto.home" i /etc/auto.master
     I /etc/auto.home definerade vi varje användares subkatalog och vart den ska monteras genom att lägga till raderna:
-      autofs1 -fstype=nfs4, rw, nosuid, soft nfs-10.0.0.4:/home-storage1/autofs1
-      autofs2 -fstype=nfs4, rw, nosuid, soft nfs-10.0.0.4:/home-storage2/autofs2
+      autofs1 -fstype=nfs4,rw,hard,intr 10.0.0.4:/home-storage1/autofs1
+      autofs2 -fstype=nfs4,rw,hard,intr 10.0.0.4:/home-storage2/autofs2
     Nu när användaren loggar in så kommer användares huvudkatalog automatiskt monteras på nfs-servern.
+
+    autofs1@client-1:~$ rm merv.txt 
+    autofs1@client-1:~$ touch merv.txt
+    autofs1@client-1:~$ nano merv.txt
+    autofs1@client-1:~$ cat merv.txt 
+    Bagagwa
+    autofs1@client-1:~$ 
+    
+    autofs1@client-1:~$ cd ..
+    autofs1@client-1:/home$ cd autofs2
+    autofs1@client-1:/home/autofs2$ ls
+    autofs1@client-1:/home/autofs2$ touch merv.txt
+    touch: cannot touch 'merv.txt': Permission denied
+    autofs1@client-1:/home/autofs2$ 
+
+
+    
 
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
+  Paketen var redan installerade.
+    
+  Skapade autofs-ldap.ldif med innehåll:
+  
+      dn: cn=autofs,cn=schema,cn=config
+      objectClass: olcSchemaConfig
+      cn: autofs
+      olcAttributeTypes: ( 1.3.6.1.4.1.2312.4.1.2 NAME 'automountInformation'
+              DESC 'Information used by the autofs automounter'
+              EQUALITY caseExactIA5Match
+              SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+      olcObjectClasses: ( 1.3.6.1.4.1.2312.4.2.3 NAME 'automount' SUP top STRUCTURAL
+              DESC 'An entry in an automounter map'
+              MUST ( cn $ automountInformation $ objectClass )
+              MAY ( description ) )
+      olcObjectClasses: ( 1.3.6.1.4.1.2312.4.2.2 NAME 'automountMap' SUP top STRUCTURAL
+              DESC 'A group of related automount objects'
+              MUST ( ou ) )
+
+      ldapadd -Y EXTERNAL -H ldapi:/// -f autofs-ldap.ldif
+      SASL/EXTERNAL authentication started
+      SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+      SASL SSF: 0
+      adding new entry "cn=autofs,cn=schema,cn=config"
+
+  Skapade en fil ou_ldap.ldif med innehåll:
+  
+        dn: ou=automount,dc=zorbak,dc=com
+        objectClass: organizationalUnit
+        ou: automount
+        
+        dn: ou=auto.home,ou=automount,dc=zorbak,dc=com
+        objectClass: organizationalUnit
+        ou: auto.home
+  och använde ldapadd för att lägga till den.
+
+  gjorde en annan ldif fil med detta innehåll:
+  
+        dn: cn=autofs1,ou=auto.home,ou=automount,dc=zorbak,dc=com
+        objectClass: top
+        objectClass: automount
+        cn: autofs1
+        automountInformation: /home-storage1/autofs1
+        
+        dn: cn=autofs2,ou=auto.home,ou=automount,dc=zorbak,dc=com
+        objectClass: top
+        objectClass: automount
+        cn: autofs2
+        automountInformation: /home-storage2/autofs2
+
+  /etc/default/autofs på klient:
+  
+        #
+        # Init system options
+        #
+        # If the kernel supports using the autofs miscellanous device
+        # and you wish to use it you must set this configuration option
+        # to "yes" otherwise it will not be used.
+        #
+        USE_MISC_DEVICE="yes"
+        #
+        # Use OPTIONS to add automount(8) command line options that
+        # will be used when the daemon is started.
+        #
+        #OPTIONS=""
+        #
+        MASTER_MAP_NAME="ou=auto.master,ou=automount,dc=zorbak,dc=com"
+        LDAP_URI="ldap://10.0.0.4"
+        SEARCH_BASE="ou=automount,dc=zorbak,dc=com"
+        
+        MAP_OBJECT_CLASS="automountMap"
+        ENTRY_OBJECT_CLASS="automount"
+        MAP_ATTRIBUTE="ou"
+        ENTRY_ATTRIBUTE="cn"
+        VALUE_ATTRIBUTE="automountInformation"
+
+
+
+
+
+
+
+
+
+
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
 
 
 
