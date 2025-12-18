@@ -92,6 +92,9 @@
 
 ## autofs utan LDAP - [STO.8](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.8)
     La till användara autofs{1..2} via användarskaparskriptet och flyttade deras /home mappar till /home-storage{1..2}
+
+    gjorde chown -R autofs1:autofs1 /home-storage1/autofs1 samt respektive för autofs2 för att ändra ägare.
+    
     I /etc/exports, la till raderna:
       /home-storage1  10.0.0.2(rw,wdelay,root_squash,no_subtree_check,sec=sys,secure,no_all_squash)
       /home-storage1  10.0.0.3(rw,wdelay,root_squash,no_subtree_check,sec=sys,secure,no_all_squash)
@@ -110,6 +113,7 @@
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
 
 
 
