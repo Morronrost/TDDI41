@@ -74,7 +74,7 @@
 
   ### På klienten
     Laddade ner nfs-common
-    Skapade en mapp /mnt/user_local och sedan monterade /usr/local från servern till den.
+    Skapade en mapp /mnt/user_local och sedan monterade /usr/local från servern till den med kommandot "mount -t nfs4 10.0.0.4:/ /mnt/user_local"
     Redigerade i /etc/fstab, gjorde så att mappen monteras vid boot, genom att lägga till raden "10.0.0.4:/ /mnt/user_local nfs4 defaults 0 0"
 
 ## autofs och automount - [STO.7](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.7)
@@ -215,6 +215,8 @@
 
 
 ## Testning av NFS-servern och autofs - [STO.10](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.10)
+
+
 
 
 
