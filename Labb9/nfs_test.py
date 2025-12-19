@@ -3,9 +3,14 @@ import subprocess
 HOSTNAME = open("/etc/hostname", "r").read().strip()
 
 def test_export():
-    result = subprocess.run("exportfs -v", shell=True, stdout=subprocess.PIPE)
+    result = subprocess.run("cat exportfs -v", shell=True, stdout=subprocess.PIPE)
     result = result.stdout.decode("utf-8")
 
+    assert "/home" in result
+    assert "/home-storage1" in result
+    assert "/home-storage2" in result
+    assert "10.0.0.2" in result
+    assert "10.0.0.3" in result
     print(f"Server exports the following:\n {result}\n")
 
 def test_on_boot():
@@ -23,4 +28,14 @@ def test_rights():
     print(f"")
     
 def test_auto_master():
+    result = subprocess.run("cat /etc/auto.master | grep ldap", shell=True, stdout=subprocess.PIPE)
+    result = result.stdout.decode("utf-8").split()[1][0:3]
+
+    assert result == "ldap"
     
+if HOSTNAME == "server":
+    test_export()
+
+if HOSTNAME == "client-1" or HOSTNAME == "client-2"
+    test_on_boot()
+    test_auto_master()
