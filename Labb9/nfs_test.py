@@ -17,7 +17,7 @@ def test_on_boot():
     result = subprocess.run("cat /etc/fstab | grep 10.0.0.4", shell=True, stdout=subprocess.PIPE)
     result = result.stdout.decode("utf-8").split()[1]
 
-    assert result == "mnt/user_local"
+    assert result == "/mnt/user_local"
     print(f"{result} is mounted to /usr/local and mounts on boot")
 
 def test_rights():
@@ -28,14 +28,15 @@ def test_rights():
     print(f"")
     
 def test_auto_master():
-    result = subprocess.run("cat /etc/auto.master | grep ldap", shell=True, stdout=subprocess.PIPE)
-    result = result.stdout.decode("utf-8").split()[1][0:3]
+    result = subprocess.run("cat /etc/autofs.conf | grep master_map_name", shell=True, stdout=subprocess.PIPE)
+    result = result.stdout.decode("utf-8")
+    print(result)
 
-    assert result == "ldap"
-    
+    assert result == "master_map_name = ou=auto.master,ou=automount,dc=zorbak,dc=com"
+
 if HOSTNAME == "server":
     test_export()
 
-if HOSTNAME == "client-1" or HOSTNAME == "client-2"
+if HOSTNAME == "client-1" or HOSTNAME == "client-2":
     test_on_boot()
     test_auto_master()
