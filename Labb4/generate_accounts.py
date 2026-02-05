@@ -35,7 +35,7 @@ with open(sys.argv[1], "rt", encoding="utf-8") as namefile:
                     finalName += alphabet[random.randint(0,(len(alphabet)-1))]
 
             finalName = (finalName + str(random.randint(0,9)) + str(random.randint(0,9)) + str(random.randint(0,9)))
-            password = "password" #getPass()
+            password = getPass()
             subprocess.run(['useradd', '-ms', '/bin/bash', finalName ])
             subprocess.run(['passwd', finalName], input=f"{password}\n{password}\n", text=True)
             
