@@ -17,8 +17,9 @@ with open(sys.argv[1], "rt", encoding="utf-8") as namefile:
     names = names.split("\n")
     for name in names:
         finalName = ""
+        print("name: " + name)
         name = name.split()
-        if name != "":
+        if name != " ":
             name = (name[0][:3] + name[-1][:2]).lower()
             for letter in name:
                 good = False
@@ -37,11 +38,11 @@ with open(sys.argv[1], "rt", encoding="utf-8") as namefile:
             print("Account creation complete")
 
         finalName = (finalName + str(random.randint(0,9)) + str(random.randint(0,9)) + str(random.randint(0,9)))
-        password = getPass()
-        subprocess.run(['useradd', '-ms', '/bin/bash', finalName ])
-        subprocess.run(['passwd', finalName], input=f"{password}\n{password}\n", text=True)
+        password = "password" #getPass()
+        #subprocess.run(['useradd', '-ms', '/bin/bash', finalName ])
+        #subprocess.run(['passwd', finalName], input=f"{password}\n{password}\n", text=True)
         
-        #print("ID: " + finalName)
-        #print("Password: " + password)
+        print("ID: " + finalName)
+        print("Password: " + password)
 
     
