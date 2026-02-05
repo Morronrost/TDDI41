@@ -38,11 +38,9 @@ with open(sys.argv[1], "rt", encoding="utf-8") as namefile:
     names = namefile.read()
     names = names.split("\n")
     for name in names:
-        if name == "":
-            print("completed")
-        else:
-            finalName = ""
-            name = name.split()
+        finalName = ""
+        name = name.split()
+        if name != "":
             name = (name[0][:3] + name[-1][:2]).lower()
             for letter in name:
                 good = False
@@ -59,10 +57,12 @@ with open(sys.argv[1], "rt", encoding="utf-8") as namefile:
                     finalName += alphabet[random.randint(0,(len(alphabet)-1))]
 
             finalName = (finalName + str(random.randint(0,9)) + str(random.randint(0,9)) + str(random.randint(0,9)))
-            #password = getPass()
+            password = getPass()
             subprocess.run(['useradd', '-ms', '/bin/bash', finalName ])
             subprocess.run(['passwd', finalName], input=f"{password}\n{password}\n", text=True)
             
             ldap(finalName, password)
             #print("ID: " + finalName)
             #print("Password: " + password)
+        else:
+            print("Account creation complete")
