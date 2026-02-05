@@ -1,7 +1,7 @@
 ## Shebang - [SCT.1](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sct/index.sv.shtml#sct.1)
     1. Vad är en shebang? Och hur används det?
-      En shebang är skrivs längst upp i din skriptkod och berättar vägen till kompilatorn som kommer att skriva om koden till maskinkod.
-      t.ex "#!/usr/bin/python3.9"
+      En shebang är skrivs längst upp i din skriptkod och berättar vilken tolk som ska köra skripten
+      t.ex "#!/usr/bin/python3.9" för att köra skripten med python3.9.
       
 ## Skript för att automatiskt skapa användarkonto - [SCT.2](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sct/index.sv.shtml#sct.2)
         #!/usr/bin/python3.9
@@ -71,5 +71,6 @@
     test_root()
     test_noshell()
     
+
 
 
