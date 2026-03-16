@@ -179,20 +179,6 @@
         
   och använde ldapadd för att lägga till den.
 
-  gjorde en annan ldif fil med detta innehåll:
-  
-        dn: cn=autofs1,ou=auto.home,ou=automount,dc=zorbak,dc=com
-        objectClass: top
-        objectClass: automount
-        cn: autofs1
-        automountInformation: /home-storage1/autofs1
-        
-        dn: cn=autofs2,ou=auto.home,ou=automount,dc=zorbak,dc=com
-        objectClass: top
-        objectClass: automount
-        cn: autofs2
-        automountInformation: /home-storage2/autofs2
-
   /etc/default/autofs på klient:
   
         #
