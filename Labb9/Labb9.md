@@ -130,9 +130,7 @@
 ## autofs med LDAP - [STO.9](https://www.ida.liu.se/~TDDI41/2025/uppgifter/sto/index.sv.shtml#sto.9)
 
   Paketen var redan installerade.
-  Se till så att nsswitch.conf har följande:
-  
-          automount: files ldap
+
 
           
   Skapade autofs-ldap.ldif med innehåll:
@@ -208,7 +206,10 @@
         MAP_ATTRIBUTE="ou"
         ENTRY_ATTRIBUTE="cn"
         VALUE_ATTRIBUTE="automountInformation"
-
+        
+  Se till så att nsswitch.conf har följande på klienterna:
+  
+          automount: files ldap
 
   ### Autofs användarskript
     #!/usr/bin/python3.9
